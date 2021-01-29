@@ -1,0 +1,38 @@
+# Django configuration for a Django auth service container
+
+MIDDLEWARE:
+  - django.middleware.security.SecurityMiddleware
+  - django.contrib.sessions.middleware.SessionMiddleware
+  - django.middleware.common.CommonMiddleware
+  - django.middleware.csrf.CsrfViewMiddleware
+  - django.contrib.messages.middleware.MessageMiddleware
+  - django.middleware.clickjacking.XFrameOptionsMiddleware
+  - authenticate.oauth2.middleware.BearerTokenAuthenticationMiddleware
+  - authenticate.oidc.middleware.OpenIDConnectAuthenticationMiddleware
+  # Authorization enforcing authentication
+  - authorize.middleware.LoginAuthorizationMiddleware
+  # Authorization using OPA (requires extra config)
+  #- authorize.opa.middleware.OPAAuthorizationMiddleware
+  # Authorization using SAML (requires extra config)
+  #- authorize.middleware.saml.SAMLAuthorizationMiddleware
+
+# OAuth Bearer Token auth settings
+OAUTH_CLIENT_ID: test-client
+OAUTH_CLIENT_SECRET: <client-secret>
+OAUTH_TOKEN_URL: https://auth-test.ceda.ac.uk/auth/realms/esgf/protocol/openid-connect/token
+OAUTH_TOKEN_INTROSPECT_URL: https://auth-test.ceda.ac.uk/auth/realms/esgf/protocol/openid-connect/token/introspect
+
+# OIDC auth settings
+OIDC_BACKEND_CLIENT_NAME: esgf
+AUTHLIB_OAUTH_CLIENTS:
+  esgf:
+    client_id: test-client
+    client_secret: <client-secret>
+    authorize_url: https://auth-test.ceda.ac.uk/auth/realms/esgf/protocol/openid-connect/auth
+    userinfo_endpoint: https://auth-test.ceda.ac.uk/auth/realms/esgf/protocol/openid-connect/userinfo
+    server_metadata_url: https://auth-test.ceda.ac.uk/auth/realms/esgf/.well-known/openid-configuration
+    client_kwargs:
+      scope: openid profile email
+
+# Django secret key
+SECRET_KEY: <django-secret-key>
