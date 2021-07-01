@@ -3,6 +3,6 @@
 docker run \
     --rm \
     --name nginxauthservice \
-    -p 7000:8080 \
+    -p 8080:8080 \
     -v $(pwd)/20-runtime-settings.yaml:/etc/django/settings.d/20-runtime-settings.yaml \
-    esgfdeploy/auth-service:issue-119-django-authentication-service
+    esgfdeploy/auth-service:latest
